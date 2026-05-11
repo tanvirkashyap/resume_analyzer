@@ -10,4 +10,10 @@ def extract_keywords(text: str) -> list:
         token.lemma_ for token in doc
         if not token.is_stop and not token.is_punct and token.pos_ in ("NOUN", "PROPN", "VERB")
     ]
+    # in keyword_extractor.py
+    ALIASES = {
+    "machine learning": "ml",
+    "artificial intelligence": "ai",
+    "natural language processing": "nlp"
+}
     return list(set(keywords))
