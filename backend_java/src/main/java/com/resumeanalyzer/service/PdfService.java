@@ -11,15 +11,13 @@ import java.io.IOException;
 public class PdfService {
 
     public String extractText(MultipartFile file) {
-
-        try (PDDocument document = PDDocument.load(file.getInputStream())) {
-
-            PDFTextStripper stripper = new PDFTextStripper();
-
-            return stripper.getText(document);
-
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to parse PDF");
-        }
+    try (PDDocument document = PDDocument.load(file.getInputStream())) {
+        PDFTextStripper stripper = new PDFTextStripper();
+        stripper.setSortByPosition(true); // fixes column/layout issues
+        String text = stripper.getText(document);
+        return text.replaceAll("\\s+", " ").trim(); // normalize whitespace
+    } catch (IOException e) {
+        throw new ResumeProcessingException("Failed to parse PDF: " + e.getMessage());
     }
+}
 }

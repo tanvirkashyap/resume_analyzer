@@ -5,6 +5,7 @@ import com.resumeanalyzer.dto.MlResponseDTO;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 @Service
@@ -31,13 +32,14 @@ public class MlApiService {
 
         HttpEntity<MlRequestDTO> entity = new HttpEntity<>(request, headers);
 
-        ResponseEntity<MlResponseDTO> response = restTemplate.exchange(
-                mlApiUrl,
-                HttpMethod.POST,
-                entity,
-                MlResponseDTO.class
-        );
-
+        try {
+    ResponseEntity<MlResponseDTO> response = restTemplate.exchange(
+        mlApiUrl, HttpMethod.POST, entity, MlResponseDTO.class
+    );
+    return response.getBody();
+} catch (RestClientException e) {
+    throw new ResumeProcessingException("ML service unavailable: " + e.getMessage());
+}
         return response.getBody();
     }
 }

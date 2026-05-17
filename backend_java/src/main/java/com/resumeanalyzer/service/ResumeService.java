@@ -31,7 +31,10 @@ public class ResumeService {
             MultipartFile file,
             String jobDescription
     ) {
-
+        MlResponseDTO mlResponse = mlApiService.analyzeResume(resumeText, jobDescription);
+        if (mlResponse == null) {
+    throw new ResumeProcessingException("Empty response from ML service");
+}
         FileValidator.validate(file);
 
 }
