@@ -1,5 +1,5 @@
-from utils.keyword_extractor import extract_keywords
-from services.scorer import calculate_score
+from utils.keyword_extractor import extract_skills as extract_keywords
+from services.scorer import score_resume
 
 def analyze_resume(resume_text: str, job_description: str) -> dict:
     resume_keywords = extract_keywords(resume_text)
@@ -7,7 +7,7 @@ def analyze_resume(resume_text: str, job_description: str) -> dict:
 
     matched = list(set(resume_keywords) & set(job_keywords))
     missing = list(set(job_keywords) - set(resume_keywords))
-    score = calculate_score(matched, job_keywords)
+    score = score_resume(resume_text, job_description)
 
     return {
         "match_score": score,

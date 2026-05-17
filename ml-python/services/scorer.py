@@ -1,3 +1,6 @@
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
+
 def score_resume(resume_text: str, job_description: str):
     if not job_description:
         return 50

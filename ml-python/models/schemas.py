@@ -1,12 +1,14 @@
 from pydantic import BaseModel
-from typing import List
+from typing import List, Optional
 
 class ResumeRequest(BaseModel):
-    resume_text: str
-    job_description: str
+    resumeText: str
+    jobDescription: Optional[str] = ""
 
 class ResumeResponse(BaseModel):
-    match_score: float
-    matched_keywords: List[str]
-    missing_keywords: List[str]
+    score: int
+    skills: List[str]
+    missing_skills: List[str]
     suggestions: List[str]
+
+    
