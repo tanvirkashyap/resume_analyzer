@@ -1,0 +1,9 @@
+fastapi
+uvicorn
+pydantic
+pdfplumber
+spacy
+scikit-learn
+python-dotenv
+selenium
+webdriver-manager
