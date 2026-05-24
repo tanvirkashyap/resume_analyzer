@@ -1,121 +1,63 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
-
-from selenium.webdriver.chrome.options import Options
-
+from selenium.webdriver.edge.options import Options
+from selenium.webdriver.edge.service import Service
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-
-from webdriver_manager.chrome import ChromeDriverManager
-from selenium.webdriver.chrome.service import Service
-
+from webdriver_manager.microsoft import EdgeChromiumDriverManager
 import time
 
-
 class LinkedInScraper:
-
     def __init__(self):
-
-        chrome_options = Options()
-
-        chrome_options.add_argument("--headless")
-        chrome_options.add_argument("--disable-gpu")
-        chrome_options.add_argument("--no-sandbox")
-        chrome_options.add_argument("--window-size=1920,1080")
-
-        # Helps reduce bot detection slightly
-        chrome_options.add_argument(
-            "--disable-blink-features=AutomationControlled"
+        edge_options = Options()
+        edge_options.add_argument("--headless")
+        edge_options.add_argument("--disable-gpu")
+        edge_options.add_argument("--no-sandbox")
+        edge_options.add_argument("--window-size=1920,1080")
+        edge_options.add_argument("--disable-blink-features=AutomationControlled")
+        edge_options.add_argument("--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36")
+        self.driver = webdriver.Edge(
+            service=Service(EdgeChromiumDriverManager().install()),
+            options=edge_options
         )
-
-        self.driver = webdriver.Chrome(
-            service=Service(
-                ChromeDriverManager().install()
-            ),
-            options=chrome_options
-        )
-
-        self.wait = WebDriverWait(
-            self.driver,
-            10
-        )
+        self.wait = WebDriverWait(self.driver, 15)
 
     def search_jobs(self, query):
-
         jobs = []
-
         try:
-
-            url = (
-                "https://www.linkedin.com/jobs/search/"
-                f"?keywords={query}"
-            )
-
+            url = f"https://www.linkedin.com/jobs/search/?keywords={query.replace(' ', '%20')}"
             self.driver.get(url)
-
-            # Wait for job cards
-            self.wait.until(
-                EC.presence_of_element_located(
-                    (By.CLASS_NAME, "base-card")
-                )
-            )
-
-            time.sleep(3)
-
-            job_cards = self.driver.find_elements(
-                By.CLASS_NAME,
-                "base-card"
-            )
-
-            for card in job_cards[:10]:
-
+            time.sleep(4)
+            job_cards = self.driver.find_elements(By.CLASS_NAME, "base-card")
+            for card in job_cards[:5]:
                 try:
-
-                    title = card.find_element(
-                        By.CLASS_NAME,
-                        "base-search-card__title"
-                    ).text.strip()
-
-                    company = card.find_element(
-                        By.CLASS_NAME,
-                        "base-search-card__subtitle"
-                    ).text.strip()
-
-                    location = card.find_element(
-                        By.CLASS_NAME,
-                        "job-search-card__location"
-                    ).text.strip()
-
-                    link = card.find_element(
-                        By.TAG_NAME,
-                        "a"
-                    ).get_attribute("href")
-
+                    title = card.find_element(By.CLASS_NAME, "base-search-card__title").text.strip()
+                    try:
+                        company = card.find_element(By.CLASS_NAME, "base-search-card__subtitle").text.strip()
+                    except:
+                        company = "Unknown"
+                    try:
+                        location = card.find_element(By.CLASS_NAME, "job-search-card__location").text.strip()
+                    except:
+                        location = "Not specified"
+                    try:
+                        link = card.find_element(By.TAG_NAME, "a").get_attribute("href")
+                    except:
+                        link = ""
+                    description = card.text
                     jobs.append({
                         "title": title,
                         "company": company,
                         "location": location,
                         "link": link,
+                        "description": description,
                         "source": "LinkedIn"
                     })
-
                 except Exception as e:
-
-                    print(
-                        f"Error extracting LinkedIn card: {e}"
-                    )
-
+                    print(f"Error extracting LinkedIn card: {e}")
                     continue
-
         except Exception as e:
-
-            print(
-                f"LinkedIn scraping failed: {e}"
-            )
-
+            print(f"LinkedIn scraping failed: {e}")
         finally:
-
             self.driver.quit()
-
         return jobs

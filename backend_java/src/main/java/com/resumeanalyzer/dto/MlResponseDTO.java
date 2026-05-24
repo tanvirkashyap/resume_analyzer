@@ -1,7 +1,8 @@
 package com.resumeanalyzer.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
-
 import java.util.List;
 
 @Getter
@@ -9,13 +10,18 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class MlResponseDTO {
 
+    @JsonProperty("score")
     private Integer score;
 
+    @JsonProperty("skills")
     private List<String> skills;
 
-    private List<String> missing_skills;
+    @JsonProperty("missing_skills")
+    private List<String> missingSkills;
 
+    @JsonProperty("suggestions")
     private List<String> suggestions;
 }

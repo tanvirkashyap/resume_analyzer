@@ -6,8 +6,12 @@ export default defineConfig({
   server: {
     port: 3000,
     proxy: {
-      "/api": {
+      "/api/resume": {
         target: "http://localhost:8080",
+        changeOrigin: true,
+      },
+      "/api/scrape": {
+        target: "http://localhost:8000",
         changeOrigin: true,
       },
     },

@@ -1,1 +1,10 @@
-["python", "java", "c++", "docker", "kubernetes", "spring boot", "fastapi", "react", "machine learning", "postgresql", "mysql", "linux", "git", "aws", "javascript", "typescript", "mongodb", "redis", "django", "flask"]
+["python", "java", "c++", "c#", "go", "rust", "kotlin", "swift", "scala", "php", "ruby",
+"docker", "kubernetes", "terraform", "ansible", "jenkins", "github actions", "gitlab ci",
+"spring boot", "fastapi", "django", "flask", "nodejs", "express", "react", "angular", "vue",
+"machine learning", "deep learning", "tensorflow", "pytorch", "scikit-learn", "pandas", "numpy",
+"postgresql", "mysql", "mongodb", "redis", "elasticsearch", "cassandra", "dynamodb", "sqlite",
+"linux", "git", "aws", "azure", "gcp", "google cloud",
+"javascript", "typescript", "html", "css", "graphql", "rest api",
+"mongodb", "redis", "kafka", "rabbitmq", "nginx", "apache",
+"ci/cd", "devops", "agile", "scrum", "jira", "confluence",
+"microservices", "system design", "data structures", "algorithms"]

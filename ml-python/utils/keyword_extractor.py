@@ -9,8 +9,12 @@ with open("data/skills.json", "r") as f:
 
 def extract_skills(resume_text: str):
     cleaned = clean_text(resume_text)
+    print(f"Cleaned text for matching: {cleaned[:200]}")
+    print(f"Skills DB: {SKILLS_DB}")
     extracted_skills = set()
     for skill in SKILLS_DB:
         if skill.lower() in cleaned.lower():
+            print(f"MATCHED: {skill}")
             extracted_skills.add(skill.lower())
+    print(f"Extracted skills: {extracted_skills}")
     return list(extracted_skills)

@@ -1,17 +1,13 @@
 spring:
-  datasource:
-    url: jdbc:postgresql://localhost:5432/resume_db
-    username: postgres
-    password: password
-
-  jpa:
-    hibernate:
-      ddl-auto: update
-    show-sql: true
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+      - org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration
+      - org.springframework.boot.autoconfigure.data.jpa.JpaRepositoriesAutoConfiguration
 
 server:
   port: 8080
 
 ml:
   service:
-    url: http://localhost:8000/analyze
+    url: http://localhost:8000/api/analyze

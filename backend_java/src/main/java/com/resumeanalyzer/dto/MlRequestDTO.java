@@ -1,5 +1,6 @@
 package com.resumeanalyzer.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 @Getter
@@ -9,6 +10,9 @@ import lombok.*;
 @Builder
 public class MlRequestDTO {
 
+    @JsonProperty("resumeText")
     private String resumeText;
+
+    @JsonProperty("jobDescription")
     private String jobDescription;
 }
